@@ -8,7 +8,7 @@ Performance and const-correctness are now friends! :tada: :rocket:
 
 This header only library allows you to move `const` values.
 
-**Note**: you should move a const value only if you are sure that the target function does not modify the object (it is non-mutating).
+**Note**: you should move a const value only if you are sure that the target does not modify the object
 
 ### Why?
 This allows making your programs const-correct without being worried about extra copies.
