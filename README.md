@@ -15,9 +15,12 @@ This allows making your programs const-correct without being worried about extra
 
 `const` in C++ is scoped, and it is not equivalent to `immutable`. The standard does not provide any language feature that allows the developers to mark a function as `immutable`. So, the library writers usually only provide `f(T && arg)` and `f(T const & arg)` overloads, and they do not provide `f(T const && arg)`. This results in extra copies while the function is not necessarily `mutating`.
 
+Using `move_const` allows following core guidelines without being worried about performance.
+https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con1-by-default-make-objects-immutable
+
 ### Example
 
-Run it online: https://cpp.godbolt.org/z/e44q1h
+Run it online: https://cpp.godbolt.org/z/h4Kn1a
 
 ```cpp
 #include <string>
@@ -25,6 +28,8 @@ Run it online: https://cpp.godbolt.org/z/e44q1h
 
 struct S
 {
+    std::string value;
+
     S() = default;
     ~S() = default;
 
@@ -33,12 +38,17 @@ struct S
     S& operator=(S const&) = default;
     S& operator=(S&&) = default;
 
-    std::string s = "Hello World im long string string string";
 };
 
 int main()
 {
-    const S s;
-    S s2(move_const(s));
+    const auto s = S{"Hello World im long string string string"};
+
+    // ...
+    // s is const for you here
+    // ...
+
+    // you don't need s anymore, so you can move it to s2 without copying
+    const auto s2 = S(move_const(s));
 }
 ```
