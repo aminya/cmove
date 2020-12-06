@@ -17,6 +17,7 @@ This allows making your programs const-correct without being worried about extra
 
 ### Example
 
+Run it online: https://cpp.godbolt.org/z/e44q1h
 
 ```cpp
 #include <string>
