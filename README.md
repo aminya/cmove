@@ -1,4 +1,4 @@
-# move_const
+# cmove
 
 Move const values in C++
 
@@ -16,7 +16,7 @@ This allows making your programs const-correct without being worried about extra
 
 `const` in C++ is scoped, and it is not equivalent to `immutable`. The standard does not provide any language feature that allows the developers to mark a function as `immutable`. So, the library writers usually only provide `f(T && arg)` and `f(T const & arg)` overloads, and they do not provide `f(T const && arg)`. This results in extra copies while the function is not necessarily `mutating`.
 
-Using `move_const` allows following core guidelines without being worried about performance.
+Using `cmove` allows following core guidelines without being worried about performance.
 https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con1-by-default-make-objects-immutable
 
 ### Example
@@ -24,7 +24,7 @@ https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con1-by-default-mak
 Run it online: https://cpp.godbolt.org/z/daGKT3P3G
 
 ```cpp
-#include "./move_const.h"
+#include "./cmove.h"
 #include <string>
 
 struct MyStruct
@@ -42,7 +42,7 @@ int main() {
     // s.value = "changed value";
 
     // you don't need s anymore, so you can move it to s2 without copying
-    const auto s2 = MyStruct(move_const(s));
+    const auto s2 = MyStruct(cmove(s));
 
     // use s2 somewhere
     return int(s2.value.size());
