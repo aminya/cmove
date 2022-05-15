@@ -14,10 +14,13 @@ TEST_CASE("cmove::cmove") {
   // s is const for you here
   // ...
   // error:
-  // s.value = "changed value";
+  // my_struct_1.value = "changed value";
 
   // you don't need s anymore, so you can move it to s2 without copying
   const auto my_struct_2 = MyStruct(cmove::cmove(my_struct_1));
+
+  // error:
+  // my_struct_2.value = "changed value";
 
   // use s2 somewhere
   fmt::print("{}", my_struct_2.value);
