@@ -3,7 +3,6 @@
 #include <fmt/core.h>
 #include <cmove/lib.hpp>
 
-
 struct MyStruct {
   std::string value;
 };
