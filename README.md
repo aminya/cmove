@@ -76,7 +76,7 @@ To automatically integrate it to your CMake project, add the following code to y
 ```cmake
 # https://github.com/aminya/cmove
 include(FetchContent)
-FetchContent_Declare(_cmove URL https://github.com/aminya/cmove/archive/refs/heads/master.zip)
+FetchContent_Declare(_cmove URL https://github.com/aminya/cmove/releases/download/v1.0.0/cmove-1.0.0.zip)
 FetchContent_MakeAvailable(_cmove)
 ```
 
