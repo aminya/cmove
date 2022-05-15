@@ -20,10 +20,10 @@ run_vcpkg()
 
 # Set the project name and language
 project(
-  cpp_vcpkg_project
-  VERSION 0.0.1
+  cmove
+  VERSION 1.0.0
   DESCRIPTION ""
-  HOMEPAGE_URL "https://github.com/cpp-best-practices/cpp_vcpkg_project"
+  HOMEPAGE_URL "https://github.com/cpp-best-practices/cmove"
   LANGUAGES CXX C)
 
 # enable sanitizers and clang-tidy if running the tests
@@ -101,11 +101,8 @@ if(MSVC)
   set_target_properties(${all_targets} PROPERTIES VS_DEBUGGER_ENVIRONMENT "PATH=$(VC_ExecutablePath_x64);%PATH%")
 endif()
 
-# Experience shows that explicit package naming can help make it easier to sort
-# out potential ABI related issues before they start, while helping you
-# track a build to a specific GIT SHA
 set(CPACK_PACKAGE_FILE_NAME
-    "${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}-${GIT_SHORT_SHA}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_TYPE}-${CMAKE_CXX_COMPILER_ID}-${CMAKE_CXX_COMPILER_VERSION}"
+    "${CMAKE_PROJECT_NAME}-${CMAKE_PROJECT_VERSION}"
 )
 
 include(CPack)

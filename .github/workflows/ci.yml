@@ -55,7 +55,7 @@ jobs:
 
           # Only to test non-multiconfig builds
           - os: ubuntu-20.04
-            compiler: gcc-11
+            compiler: gcc
             CMAKE_GENERATOR: "Unix Makefiles"
             GCOV: gcov
 
@@ -133,10 +133,10 @@ jobs:
 
       - name: Publish Tagged Release
         uses: softprops/action-gh-release@v1
-        if: ${{ startsWith(github.ref, 'refs/tags/') && matrix.CPACK_GENERATOR != '' }}
+        if: ${{ startsWith(github.ref, 'refs/tags/') && matrix.CPACK_GENERATOR != '' && matrix.os == 'ubuntu-20.04' && matrix.compiler == 'llvm' }}
         with:
           files: |
-            build/*-*Release*-*.*
+            build/cmove-*.zip
 
       - name: Publish to codecov
         uses: codecov/codecov-action@v2

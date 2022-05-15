@@ -1,4 +1,5 @@
 # Build directories and binary files
+install/
 build/
 out/
 cmake-build-*/
