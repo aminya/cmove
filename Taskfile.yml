@@ -13,9 +13,7 @@ tasks:
 
   # Execute the app or the tests
   run_template:
-    - cd build/my_exe/test && ctest -C {{.CMAKE_BUILD_TYPE}} --output-on-failure
-    - cd build/my_header_lib/test && ctest -C {{.CMAKE_BUILD_TYPE}} --output-on-failure
-    - cd build/my_lib/test && ctest -C {{.CMAKE_BUILD_TYPE}} --output-on-failure
+    - cd build/test && ctest -C {{.CMAKE_BUILD_TYPE}} --output-on-failure
 
   # Run with coverage analysis
   coverage_template:
@@ -24,14 +22,14 @@ tasks:
       - |
         {{if eq OS "windows"}}
 
-          OpenCppCoverage.exe --export_type html:./build/coverage --export_type cobertura:./build/coverage.xml --cover_children --sources "my_exe\*" --sources "my_lib\*" --sources "my_header_lib\*" --modules "build\*" -- task run_template
+          OpenCppCoverage.exe --export_type html:./build/coverage --export_type cobertura:./build/coverage.xml --cover_children --sources "include\*" --sources "test\*" --modules "build\*" -- task run_template
 
           powershell -c "if (!\$env:CI) { echo '[info] Opening ./build/coverage/index.html...'; start ./build/coverage/index.html }"
         {{else}}
           task run_template
           mkdir -p ./build/coverage/
 
-          gcovr -j {{.nproc | default 1}} --delete --filter "my_exe/" --filter "my_lib/" --filter "my_header_lib/" --root ./ --print-summary --html-details ./build/coverage/index.html --xml-pretty --xml ./build/coverage.xml ./build
+          gcovr -j {{.nproc | default 1}} --delete --filter "include/" --filter "test/" --root ./ --print-summary --html-details ./build/coverage/index.html --xml-pretty --xml ./build/coverage.xml ./build
 
           echo "Open ./build/coverage/index.html in a browser for a visual coverage report"
         {{end}}
