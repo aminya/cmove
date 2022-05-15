@@ -1,0 +1,13 @@
+ColumnLimit: 110
+IndentWidth: 2
+TabWidth: 2
+SortIncludes: false
+SortUsingDeclarations: false
+AlwaysBreakTemplateDeclarations: true
+BinPackArguments: false 
+BinPackParameters: false
+AlignEscapedNewlines: DontAlign
+AlignAfterOpenBracket: AlwaysBreak
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: None
+BreakConstructorInitializers: AfterColon
