@@ -13,7 +13,7 @@ tasks:
 
   # Execute the app or the tests
   run_template:
-    - cd build/test && ctest -C {{.CMAKE_BUILD_TYPE}} --output-on-failure
+    - cd build/cmove/test && ctest -C {{.CMAKE_BUILD_TYPE}} --output-on-failure
 
   # Run with coverage analysis
   coverage_template:
@@ -22,14 +22,14 @@ tasks:
       - |
         {{if eq OS "windows"}}
 
-          OpenCppCoverage.exe --export_type html:./build/coverage --export_type cobertura:./build/coverage.xml --cover_children --sources "include\*" --sources "test\*" --modules "build\*" -- task run_template
+          OpenCppCoverage.exe --export_type html:./build/coverage --export_type cobertura:./build/coverage.xml --cover_children --source "cmove\*" --modules "build\*" -- task run_template
 
           powershell -c "if (!\$env:CI) { echo '[info] Opening ./build/coverage/index.html...'; start ./build/coverage/index.html }"
         {{else}}
           task run_template
           mkdir -p ./build/coverage/
 
-          gcovr -j {{.nproc | default 1}} --delete --filter "include/" --filter "test/" --root ./ --print-summary --html-details ./build/coverage/index.html --xml-pretty --xml ./build/coverage.xml ./build
+          gcovr -j {{.nproc | default 1}} --delete --filter "./cmove/" --root ./ --print-summary --html-details ./build/coverage/index.html --xml-pretty --xml ./build/coverage.xml ./build
 
           echo "Open ./build/coverage/index.html in a browser for a visual coverage report"
         {{end}}

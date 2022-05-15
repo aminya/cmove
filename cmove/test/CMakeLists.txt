@@ -31,7 +31,7 @@ endif()
 catch_discover_tests(cmove_tests ${COVERAGE_ARGS})
 
 # constexpr tests
-add_subdirectory("./constexpr")
+# add_subdirectory("./constexpr")
 
 # set the startup project for the "play" button in MSVC
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT cmove_tests)

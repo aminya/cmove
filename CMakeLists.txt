@@ -79,7 +79,7 @@ project_options(
   # ENABLE_UNITY
 )
 
-include(./Lib.cmake)
+add_subdirectory("./cmove")
 
 # the variables set using CACHE STRING "" are passed to package_project
 
