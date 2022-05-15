@@ -4,22 +4,37 @@ Move const values in C++
 
 Performance and const-correctness are now friends! :tada: :rocket:
 
+[![ci](https://github.com/aminya/cmove/actions/workflows/ci.yml/badge.svg)](https://github.com/aminya/cmove/actions/workflows/ci.yml)
+
 ## Description
 
 This header only library allows you to move `const` values.
 
 ### Why?
 
-This allows making your programs const-correct without being worried about extra copies.
+`cmove::cmove` allows for making your programs const-correct without being worried about extra copies.
 
-`const` in C++ is scoped, and it is not equivalent to `immutable`. The standard does not provide any language feature that allows the developers to mark a function as `immutable`. So, the library writers usually only provide `f(T && arg)` and `f(T const & arg)` overloads, and they do not provide `f(T const && arg)`. This results in extra copies while the function is not necessarily `mutating`.
+As seen in [this link](https://cpp.godbolt.org/z/cnvvxbKcn), `cmove::cmove` generates a much smaller and faster code.
 
-Using `cmove` allows following core guidelines without being worried about performance.
-https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con1-by-default-make-objects-immutable
+This also allows cleaning up the code, as you can remove your exessive constructor duplication. The following code will be efficient and clean with the help of `cmove::cmove`:
+```cpp
+struct MyStruct
+{
+    std::string value;
+    MyStruct(std::string value_in): value(std::move(value_in)) {}
+};
+```
+```cpp
+const auto my_struct_1 = MyStruct{"Hello World im long string"};
+MyStruct(cmove::cmove(my_struct_1))
+```
+
+Using `cmove` allows [the core guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con1-by-default-make-objects-immutable
+) while increasing performance.
 
 ## Example
 
-Run it online: https://cpp.godbolt.org/z/daGKT3P3G
+Run it online: https://cpp.godbolt.org/z/TPThjq3dW
 
 ```cpp
 #include <cmove/lib.hpp>
