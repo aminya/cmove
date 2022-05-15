@@ -30,11 +30,11 @@ MyStruct(cmove::cmove(my_struct_1))
 ```
 
 Using `cmove` allows [the core guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con1-by-default-make-objects-immutable
-) while increasing performance.
+) while increasing performance. This `cmove::cmove` behavior is similar to the Rust's move behavior.
 
 ## Example
 
-Run it online: https://cpp.godbolt.org/z/vW7ax68Pn
+Run it online: https://cpp.godbolt.org/z/Ynq5eTroE
 
 ```cpp
 #include <cmove/lib.hpp>
@@ -57,7 +57,7 @@ int main() {
   // my_struct_1.value = "changed value";
 
   // you don't need my_struct_1 anymore, so you can move it to my_struct_2 without copying
-  const auto my_struct_2 = MyStruct(cmove::cmove(my_struct_1));
+  const auto my_struct_2 = MyStruct{cmove::cmove(my_struct_1)};
 
   // error:
   // my_struct_2.value = "changed value";
