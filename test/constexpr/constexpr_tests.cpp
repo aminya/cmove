@@ -1,12 +1,13 @@
 #include <catch2/catch.hpp>
+#include <fmt/core.h>
 #include <cmove/lib.hpp>
 
 struct MyStruct {
-  std::string value;
+  double value;
 };
 
-TEST_CASE("cmove::cmove") {
-  const auto s = MyStruct{"Hello World im long string string string"};
+TEST_CASE("cmove::cmove constexpr") {
+  constexpr auto my_struct_1 = MyStruct{1000.0};
 
   // ...
   // s is const for you here
@@ -15,8 +16,8 @@ TEST_CASE("cmove::cmove") {
   // s.value = "changed value";
 
   // you don't need s anymore, so you can move it to s2 without copying
-  const auto s2 = MyStruct(cmove::cmove(s));
+  constexpr auto my_struct_2 = MyStruct(cmove::cmove(my_struct_1));
 
   // use s2 somewhere
-  return int(s2.value.size());
+  fmt::print("{}", my_struct_2.value);
 }
