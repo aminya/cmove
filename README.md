@@ -17,7 +17,7 @@ This allows making your programs const-correct without being worried about extra
 Using `cmove` allows following core guidelines without being worried about performance.
 https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con1-by-default-make-objects-immutable
 
-### Example
+## Example
 
 Run it online: https://cpp.godbolt.org/z/daGKT3P3G
 
@@ -41,13 +41,32 @@ int main() {
   // error:
   // my_struct_1.value = "changed value";
 
-  // you don't need s anymore, so you can move it to s2 without copying
+  // you don't need s anymore, so you can move it to my_struct_2 without copying
   const auto my_struct_2 = MyStruct(cmove::cmove(my_struct_1));
 
   // error:
   // my_struct_2.value = "changed value";
 
-  // use s2 somewhere
+  // use my_struct_2 somewhere
   fmt::print("{}", my_struct_2.value);
 }
+```
+
+## Usage in your project
+
+cmove is a header-only library, so you can download and use the [header file](https://github.com/aminya/move_const/blob/c3f45d3445fde61dc0de3158af64252abd7a8c79/cmove/include/cmove/lib.hpp).
+
+To automatically integrate it to your CMake project, add the following code to your CMake file:
+
+```cmake
+# https://github.com/aminya/cmove
+include(FetchContent)
+FetchContent_Declare(_cmove URL https://github.com/aminya/cmove/archive/refs/heads/master.zip)
+FetchContent_MakeAvailable(_cmove)
+```
+
+Then link it to your targets:
+```
+find_package(cmove CONFIG REQUIRED)
+target_link_libraries(main PRIVATE  cmove::cmove)
 ```

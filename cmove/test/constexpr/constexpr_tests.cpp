@@ -16,7 +16,7 @@ TEST_CASE("cmove::cmove constexpr") {
   // error:
   // my_struct_1.value = "changed value";
 
-  // you don't need s anymore, so you can move it to s2 without copying
+  // you don't need s anymore, so you can move it to my_struct_2 without copying
   constexpr auto my_struct_2 = MyStruct(cmove::cmove(my_struct_1));
 
   // error:
