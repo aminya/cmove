@@ -1,4 +1,5 @@
 #include <catch2/catch.hpp>
+#include <string>
 #include <fmt/core.h>
 #include <cmove/lib.hpp>
 

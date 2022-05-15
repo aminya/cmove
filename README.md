@@ -4,7 +4,7 @@ Move const values in C++
 
 Performance and const-correctness are now friends! :tada: :rocket:
 
-### Description
+## Description
 
 This header only library allows you to move `const` values.
 
@@ -22,8 +22,10 @@ https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#con1-by-default-mak
 Run it online: https://cpp.godbolt.org/z/daGKT3P3G
 
 ```cpp
-#include "./cmove.h"
+#include <cmove/lib.hpp>
+
 #include <string>
+#include <fmt/core.h>
 
 struct MyStruct
 {
@@ -31,18 +33,21 @@ struct MyStruct
 };
 
 int main() {
-    const auto s = MyStruct{ "Hello World im long string string string" };
+  const auto my_struct_1 = MyStruct{"Hello World im long string string string"};
 
-    // ...
-    // s is const for you here
-    // ...
-    // error:
-    // s.value = "changed value";
+  // ...
+  // s is const for you here
+  // ...
+  // error:
+  // my_struct_1.value = "changed value";
 
-    // you don't need s anymore, so you can move it to s2 without copying
-    const auto s2 = MyStruct(cmove(s));
+  // you don't need s anymore, so you can move it to s2 without copying
+  const auto my_struct_2 = MyStruct(cmove::cmove(my_struct_1));
 
-    // use s2 somewhere
-    return int(s2.value.size());
+  // error:
+  // my_struct_2.value = "changed value";
+
+  // use s2 somewhere
+  fmt::print("{}", my_struct_2.value);
 }
 ```
