@@ -1,27 +1,60 @@
 #include <catch2/catch.hpp>
 #include <string>
 #include <fmt/core.h>
+#include <utility>
 #include <cmove/lib.hpp>
 
-struct MyStruct {
-  std::string value;
-};
+TEST_CASE("cmove const to a constuctor-less struct") {
+  struct Str {
+    std::string value;
+  };
+  const auto my_struct_1 = Str{"Hello World im long string string string"};
+  const auto my_struct_2 = Str{cmove::cmove(my_struct_1)};
+  fmt::print("{}", my_struct_2.value);
+}
 
-TEST_CASE("cmove::cmove") {
-  const auto my_struct_1 = MyStruct{"Hello World im long string string string"};
+TEST_CASE("cmove const to a const& constructor") {
+  struct Str {
+    std::string value;
+    explicit Str(const std::string &value_in) : value{value_in} { // NOLINT
+    }
+  };
+  const auto my_struct_1 = Str{"Hello World im long string string string"};
+  const auto my_struct_2 = Str(cmove::cmove(my_struct_1));
+  fmt::print("{}", my_struct_2.value);
+}
 
-  // ...
-  // my_struct_1 is const for you here
-  // ...
-  // error:
-  // my_struct_1.value = "changed value";
+TEST_CASE("cmove const to a value/move constructor") {
+  struct Str {
+    std::string value;
+    explicit Str(std::string value_in) : value{std::move(value_in)} { // NOLINT
+    }
+  };
+  const auto my_struct_1 = Str{"Hello World im long string string string"};
+  const auto my_struct_2 = Str(cmove::cmove(my_struct_1));
+  fmt::print("{}", my_struct_2.value);
+}
 
-  // you don't need my_struct_1 anymore, so you can move it to my_struct_2 without copying
-  const auto my_struct_2 = MyStruct{cmove::cmove(my_struct_1)};
+TEST_CASE("cmove const to a value/cmove constructor") {
+  struct Str {
+    std::string value;
+    explicit Str(std::string value_in) : value{cmove::cmove(value_in)} { // NOLINT
+    }
+  };
+  const auto my_struct_1 = Str{"Hello World im long string string string"};
+  const auto my_struct_2 = Str(cmove::cmove(my_struct_1));
+  fmt::print("{}", my_struct_2.value);
+}
 
-  // error:
-  // my_struct_2.value = "changed value";
-
-  // use my_struct_2 somewhere
+TEST_CASE("cmove const to a && constructor") {
+  struct Str {
+    std::string value;
+    explicit Str(const std::string &value_in) : value{value_in} {
+    }
+    explicit Str(std::string &&value_in) : value{std::move(value_in)} {
+    }
+  };
+  const auto my_struct_1 = Str{"Hello World im long string string string"};
+  const auto my_struct_2 = Str(cmove::cmove(my_struct_1));
   fmt::print("{}", my_struct_2.value);
 }
