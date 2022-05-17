@@ -1,27 +1,60 @@
 #include <catch2/catch.hpp>
 #include <string>
 #include <fmt/core.h>
+#include <utility>
 #include <cmove/lib.hpp>
 
-struct MyStruct {
-  double value;
-};
+TEST_CASE("cmove const to a constuctor-less struct") {
+  struct Str {
+    double value;
+  };
+  constexpr auto my_struct_1 = Str{1000.0};
+  constexpr auto my_struct_2 = Str{cmove::cmove(my_struct_1)};
+  fmt::print("{}", my_struct_2.value);
+}
 
-TEST_CASE("cmove::cmove constexpr") {
-  constexpr auto my_struct_1 = MyStruct{1000.0};
+TEST_CASE("cmove const to a const& constructor") {
+  struct Str {
+    double value;
+    constexpr explicit Str(const double &value_in) : value{value_in} { // NOLINT
+    }
+  };
+  constexpr auto my_struct_1 = Str{1000.0};
+  constexpr auto my_struct_2 = Str(cmove::cmove(my_struct_1));
+  fmt::print("{}", my_struct_2.value);
+}
 
-  // ...
-  // my_struct_1 is const for you here
-  // ...
-  // error:
-  // my_struct_1.value = "changed value";
+TEST_CASE("cmove const to a value/move constructor") {
+  struct Str {
+    double value;
+    constexpr explicit Str(double value_in) : value{std::move(value_in)} { // NOLINT
+    }
+  };
+  constexpr auto my_struct_1 = Str{1000.0};
+  constexpr auto my_struct_2 = Str(cmove::cmove(my_struct_1));
+  fmt::print("{}", my_struct_2.value);
+}
 
-  // you don't need my_struct_1 anymore, so you can move it to my_struct_2 without copying
-  const auto my_struct_2 = MyStruct{cmove::cmove(my_struct_1)};
+TEST_CASE("cmove const to a value/cmove constructor") {
+  struct Str {
+    double value;
+    constexpr explicit Str(double value_in) : value{cmove::cmove(value_in)} { // NOLINT
+    }
+  };
+  constexpr auto my_struct_1 = Str{1000.0};
+  constexpr auto my_struct_2 = Str(cmove::cmove(my_struct_1));
+  fmt::print("{}", my_struct_2.value);
+}
 
-  // error:
-  // my_struct_2.value = "changed value";
-
-  // use my_struct_2 somewhere
+TEST_CASE("cmove const to a && constructor") {
+  struct Str {
+    double value;
+    constexpr explicit Str(const double &value_in) : value{value_in} {
+    }
+    constexpr explicit Str(double &&value_in) : value{std::move(value_in)} { // NOLINT
+    }
+  };
+  constexpr auto my_struct_1 = Str{1000.0};
+  constexpr auto my_struct_2 = Str(cmove::cmove(my_struct_1));
   fmt::print("{}", my_struct_2.value);
 }
