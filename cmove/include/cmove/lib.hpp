@@ -15,7 +15,8 @@ namespace cmove {
   ```
 */
 template <typename T>
-constexpr typename std::remove_const<typename std::remove_reference<T>::type>::type &&cmove(T &&arg) {
+[[nodiscard]] constexpr typename std::remove_const<typename std::remove_reference<T>::type>::type &&
+cmove(T &&arg) noexcept {
   return const_cast<typename std::remove_const<typename std::remove_reference<T>::type>::type &&>( // NOLINT
       static_cast<typename std::remove_reference<T>::type &&>(arg));
 }
