@@ -21,7 +21,7 @@ run_vcpkg()
 # Set the project name and language
 project(
   cmove
-  VERSION 1.0.0
+  VERSION 1.0.1
   DESCRIPTION ""
   HOMEPAGE_URL "https://github.com/cpp-best-practices/cmove"
   LANGUAGES CXX C)
