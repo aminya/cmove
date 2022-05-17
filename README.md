@@ -78,6 +78,7 @@ To automatically integrate it to your CMake project, add the following code to y
 include(FetchContent)
 FetchContent_Declare(_cmove URL https://github.com/aminya/cmove/releases/download/v1.0.0/cmove-1.0.0.zip)
 FetchContent_MakeAvailable(_cmove)
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${_cmove_SOURCE_DIR})
 ```
 
 Then link it to your targets:
